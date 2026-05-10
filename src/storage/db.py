@@ -169,6 +169,16 @@ def get_post_by_message(chat_id: int, message_id: int) -> sqlite3.Row | None:
         ).fetchone()
 
 
+def cleanup_orphans() -> int:
+    """Посты со status='pending' и непустым summary — это прерванный цикл публикации.
+    Помечаем как 'rejected', чтобы не загромождать БД и не путать дедуп."""
+    with connect() as c:
+        cur = c.execute(
+            "UPDATE posts SET status='rejected' WHERE status='pending' AND summary IS NOT NULL"
+        )
+        return cur.rowcount
+
+
 def total_published() -> int:
     with connect() as c:
         return int(c.execute("SELECT COUNT(*) n FROM posts WHERE status='published'").fetchone()["n"])

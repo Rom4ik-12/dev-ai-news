@@ -27,7 +27,12 @@ def setup(ai: AI) -> Router:
             return
         post = db.get_post_by_message(msg.chat.id, replied.message_id)
         if not post or not post["summary"]:
+            log.info("reply on bot msg %s — но в БД нет поста с summary, пропускаю",
+                     replied.message_id)
             return  # не наш пост или ещё без summary
+        log.info("QA: user=%s post=%s qlen=%s",
+                 msg.from_user.id if msg.from_user else None,
+                 post["id"], len((msg.text or msg.caption or '')))
         user = msg.from_user
         if not user: return
         db.upsert_user(user.id, user.username)
