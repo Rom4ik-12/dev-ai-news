@@ -78,7 +78,7 @@ class Publisher:
                 text=text,
                 parse_mode=ParseMode.HTML,
                 message_thread_id=topic_id,
-                disable_web_page_preview=False,
+                disable_web_page_preview=True,
                 reply_to_message_id=parent["tg_message_id"] if parent and parent["tg_chat_id"] == self.env.group_id else None,
             ))
         except TelegramBadRequest as e:
