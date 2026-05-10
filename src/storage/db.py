@@ -77,6 +77,11 @@ CREATE TABLE IF NOT EXISTS channel_posts (
     published_at INTEGER NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS topic_bindings (
+    name TEXT PRIMARY KEY,
+    thread_id INTEGER NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS role_perms (
     role TEXT NOT NULL,
     perm TEXT NOT NULL,
@@ -291,6 +296,23 @@ def channel_post_save(post_id: str, channel: str, chat_id: int, message_id: int)
     with connect() as c:
         c.execute("INSERT OR REPLACE INTO channel_posts(post_id,channel,tg_chat_id,tg_message_id,published_at) VALUES(?,?,?,?,?)",
                   (post_id, channel, chat_id, message_id, now()))
+
+
+# ---------- topic bindings ----------
+
+def topic_bindings() -> dict[str, int]:
+    with connect() as c:
+        return {r["name"]: r["thread_id"] for r in c.execute("SELECT name, thread_id FROM topic_bindings")}
+
+
+def bind_topic(name: str, thread_id: int) -> None:
+    with connect() as c:
+        c.execute("INSERT OR REPLACE INTO topic_bindings(name, thread_id) VALUES(?, ?)", (name, thread_id))
+
+
+def unbind_topic(name: str) -> None:
+    with connect() as c:
+        c.execute("DELETE FROM topic_bindings WHERE name=?", (name,))
 
 
 # ---------- permissions ----------

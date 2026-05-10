@@ -1,5 +1,6 @@
 from __future__ import annotations
 from .config import load_topics as _raw
+from ..storage import db
 
 
 def cfg() -> dict:
@@ -16,9 +17,16 @@ def fallback() -> str | None:
 
 
 def thread_id_for(name: str | None) -> int | None:
+    """DB binding имеет приоритет над thread_id из yaml."""
     if not name: return None
+    bindings = db.topic_bindings()
+    if name in bindings: return bindings[name]
     t = cfg()["topics"].get(name)
     return t.get("thread_id") if t else None
+
+
+def all_names() -> list[str]:
+    return list(cfg()["topics"].keys())
 
 
 def names_for_classifier() -> list[tuple[str, str]]:
