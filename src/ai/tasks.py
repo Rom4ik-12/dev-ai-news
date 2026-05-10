@@ -60,6 +60,11 @@ async def classify_topic(ai: AI, title: str, summary: str,
 
 
 async def answer_question(ai: AI, post_summary: str, post_title: str,
-                          question: str, max_tokens: int = 300) -> str:
-    ctx = f"ПОСТ:\nЗаголовок: {post_title}\n\n{post_summary}\n\nВОПРОС: {question}"
-    return await ai.chat(prompts.QA, ctx, op="qa", max_tokens=max_tokens, temperature=0.4)
+                          question: str, *, full_text: str | None = None,
+                          max_tokens: int = 300) -> str:
+    body = (full_text or post_summary or "")[:7000]
+    ctx = (f"ЗАГОЛОВОК: {post_title}\n\n"
+           f"КРАТКИЙ ПЕРЕСКАЗ (наш канал):\n{post_summary}\n\n"
+           f"ПОЛНЫЙ ТЕКСТ СТАТЬИ:\n{body}\n\n"
+           f"ВОПРОС ПОЛЬЗОВАТЕЛЯ: {question}")
+    return await ai.chat(prompts.QA, ctx, op="qa", max_tokens=max_tokens, temperature=0.6)

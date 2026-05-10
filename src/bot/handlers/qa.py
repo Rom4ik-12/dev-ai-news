@@ -48,6 +48,7 @@ def setup(ai: AI) -> Router:
         try:
             answer = await ai_tasks.answer_question(
                 ai, post["summary"], post["title"], question,
+                full_text=post["full_text"],
                 max_tokens=qa_cfg["max_tokens"],
             )
         except Exception as e:
