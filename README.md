@@ -66,3 +66,67 @@ data/                      — SQLite-база, gitignored
 ## Открытый код
 
 Все секреты — только в `.env` (см. `.env.example`). `data/`, `*.sqlite`, логи — в `.gitignore`. Промпты вынесены в `src/ai/prompts.py`, конфиги — в `config/*.yaml`, чтобы можно было править без знания питона.
+
+## Полный список источников
+
+51 RSS/HTML источник, отсортированы по приоритету (`A` > `B` > `C` > `D`). Заблокированные в РФ и таймаутные ресурсы из исследования отфильтрованы. Конфиг — `config/sources.yaml`, отдельно есть Telegram-каналы в `config/channels.yaml`.
+
+| # | Приоритет | Источник | Язык | Фокус | Заметки |
+|---|-----------|----------|------|-------|---------|
+| 1 | A | [Ars Technica](https://arstechnica.com) | EN | Аналитика/Наука/Tech | Парсить RSS полностью. Фильтр по тегам. Отсеять: игры. Брать: глубокие статьи и научные открытия. |
+| 2 | A | [BleepingComputer](https://www.bleepingcomputer.com) | EN | Кибербезопасность/Malware | ОТЛИЧНЫЙ security-источник. RSS полностью. Брать: security breaches/malware/уязвимости. |
+| 3 | A | [CNews](https://cnews.ru) | RU | IT-бизнес/Аналитика | Лучший RU источник. Отсеять: пресс-релизы. Брать: аналитика рынка и M&A. |
+| 4 | A | [CSS-Tricks](https://css-tricks.com) | EN | CSS/Фронтенд | RSS полностью. Мало контента но высокого качества. Брать: всё. |
+| 5 | A | [GitHub Blog](https://github.blog) | EN | GitHub/Open-source | Парсить RSS полностью. Мало шума. Брать: всё — каждая статья важна. |
+| 6 | A | [Habr News](https://habr.com/ru/news/) | RU | IT/Программирование | RSS + фильтр рейтинг >50. Отсеять: переводы/холивары. Брать: оригинальные статьи. |
+| 7 | A | [Hacker News](https://news.ycombinator.com) | EN | Startups/Программирование | hnrss.org с points>50. Отсеять: Show HN/jobs. Брать: высокорейтинговые обсуждения. |
+| 8 | A | [Lobsters](https://lobste.rs) | EN | Программирование | RSS с фильтром score. Брать: высокорейтинговые посты о новых технологиях. |
+| 9 | A | [LWN.net](https://lwn.net) | EN | Linux kernel | ОТЛИЧНЫЙ источник. RSS полностью. Ничего не отсеивать. Брать: всё. |
+| 10 | A | [PC Gamer](https://www.pcgamer.com) | EN | Игры/PC | Релизы, обзоры, индустрия PC-игр. |
+| 11 | A | [SecurityLab](https://www.securitylab.ru) | RU | Кибербезопасность | Лучший RU security-источник. RSS полностью. Брать: уязвимости/security trends/аналитика. |
+| 12 | A | [Smashing Magazine](https://www.smashingmagazine.com) | EN | Фронтенд/UX/Дизайн | RSS полностью. Низкая частота — высокое качество. Брать: всё. |
+| 13 | A | [StopGame](https://stopgame.ru) | RU | Игры/Релизы/Обзоры | Крупнейший RU игровой портал. Релизы, обзоры, индустрия. |
+| 14 | A | [TechCrunch](https://techcrunch.com) | EN | Стартапы/Венчур | RSS по категориям. Отсеять: мелкие funding rounds. Брать: крупные сделки и IPO. |
+| 15 | A | [The Guardian Tech](https://www.theguardian.com/technology) | EN | Tech policy/Privacy | RSS. Отсеять: обзоры гаджетов. Брать: tech policy/privacy/cybersecurity. |
+| 16 | A | [VC.ru Tech](https://vc.ru/tech) | RU | IT-бизнес/Стартапы | RSS. Отсеять: мнения без фактов. Брать: аналитика и крупные сделки. |
+| 17 | A | [VentureBeat](https://venturebeat.com) | EN | AI/Enterprise/Игры | RSS по категориям (AI/Enterprise). Отсеять: игры. Брать: AI-исследования/enterprise tech. |
+| 18 | B | [3DNews](https://3dnews.ru) | RU | Железо/Софт/Гаджеты | RSS по категориям (Hardware/Software). Отсеять: скидки/пресс-релизы. Брать: обзоры нового железа и аналитику. |
+| 19 | B | [4PDA](https://4pda.to) | RU | Мобильные устройства | RSS. Отсеять: прошивки/моддинг/скидки. Брать: обзоры флагманов/сравнения. |
+| 20 | B | [9to5Mac](https://9to5mac.com) | EN | Apple/iOS/macOS | RSS + фильтр по ключевым словам. Отсеять: слухи. Брать: обновления OS и новые продукты. |
+| 21 | B | [AnandTech](https://www.anandtech.com) | EN | Глубокие обзоры железа | RSS. Брать: подробные обзоры CPU/GPU/Storage. Лучший для hardware. |
+| 22 | B | [DEV.to](https://dev.to) | EN | Программирование/Карьера | ОГРОМНОЙ поток. RSS с фильтром reactions>100. Отсеять: beginner/career. Брать: популярные технические статьи. |
+| 23 | B | [Eurogamer](https://www.eurogamer.net) | EN | Игры/Индустрия | Игровые новости и аналитика. |
+| 24 | B | [Mozilla Blog](https://blog.mozilla.org) | EN | Firefox/Web standards | RSS полностью. Брать: Firefox updates/web privacy/internet policy. |
+| 25 | B | [Notebookcheck](https://www.notebookcheck.net) | EN/DE | Ноутбуки/Смартфоны | RSS. Отсеять: мелкие анонсы. Брать: обзоры с бенчмарками. |
+| 26 | B | [OSNews](https://www.osnews.com) | EN | Операционные системы | RSS. Брать: новые OS/обновления/аналитика. |
+| 27 | B | [Overclockers.ru](https://overclockers.ru) | RU | Железо/Разгон/Игры | RSS. Отсеять: форум/игры. Брать: обзоры железа/разгон/бенчмарки. |
+| 28 | B | [Packet Storm](https://packetstormsecurity.com) | EN | Эксплоиты/Уязвимости | RSS. Отсеять: старые эксплоиты (>30 дней). Брать: новые уязвимости/security tools. |
+| 29 | B | [Phoronix](https://www.phoronix.com) | EN | Linux hardware | RSS по категориям. Отсеять: мелкие обновления драйверов. Брать: релизы Mesa/Kernel. |
+| 30 | B | [Raspberry Pi News](https://www.raspberrypi.com/news/) | EN | Raspberry Pi/Embedded | RSS полностью. Мало но качественно. Брать: новые продукты/проекты. |
+| 31 | B | [Reddit r/programming](https://reddit.com/r/programming) | EN | Программирование | RSS с фильтром upvotes>500. Отсеять: мемы/холивары. Брать: крупные релизы. |
+| 32 | B | [Rock Paper Shotgun](https://www.rockpapershotgun.com) | EN | Игры/PC | Авторский игровой блог о PC. |
+| 33 | B | [Tech.eu](https://tech.eu) | EN | Европейские стартапы | RSS. Отсеять: мелкие funding rounds. Брать: крупные сделки/европейские тренды. |
+| 34 | B | [The Verge](https://www.theverge.com) | EN | Поп-культура/Tech | RSS с фильтрацией. Отсеять: стриминги/развлечения. Брать: tech policy и AI-новости. |
+| 35 | B | [Tom's Hardware](https://www.tomshardware.com) | EN | Железо/Обзоры | RSS по категориям (CPU/GPU). Отсеять: deals. Брать: обзоры нового железа и бенчмарки. |
+| 36 | B | [ZDNET](https://www.zdnet.com) | EN | Enterprise/Cloud/AI | RSS с фильтрацией. Отсеять: sponsored. Брать: enterprise news и cloud computing. |
+| 37 | B | [Игромания](https://www.igromania.ru) | RU | Игры/Новости | RU-новости игр. |
+| 38 | B | [Хайтек+](https://hightech.plus) | RU | Технологии/Наука | RSS. Отсеять: deals/пресс-релизы. Брать: наука/гаджеты/космос/IT-аналитика. |
+| 39 | B | [Хакер (xakep.ru)](https://xakep.ru) | RU | Хакинг/Безопасность/DIY | RSS. Отсеять: статьи >30 дней. Брать: уязвимости/security tools/DIY hardware. |
+| 40 | C | [Android Central](https://androidcentral.com) | EN | Android/Мобильные | RSS с фильтрацией. Отсеять: how-to/аксессуары. Брать: глобальные обновления Android. |
+| 41 | C | [Android Police](https://www.androidpolice.com) | EN | Android/Google | RSS. Отсеять: app reviews/how-to. Брать: обновления Android/Google анонсы. |
+| 42 | C | [CNET](https://www.cnet.com) | EN | Обзоры/Tech новости | МНОГО шума. Жёсткая фильтрация. Отсеять: deals/how-to/sponsored. Брать: крупные анонсы. |
+| 43 | C | [Engadget](https://www.engadget.com) | EN | Гаджеты/Tech | RSS с фильтрацией. Отсеять: скидки/how-to/игры. Брать: крупные анонсы. |
+| 44 | C | [Futurism](https://futurism.com) | EN | Наука/AI/Космос | RSS. Отсеять: clickbait. Брать: AI-новости/космос/научные открытия. |
+| 45 | C | [GamingOnLinux](https://www.gamingonlinux.com) | EN | Игры/Linux | Игры на Linux/Steam Deck/Proton. |
+| 46 | C | [Rozetked](https://rozetked.me) | RU | Гаджеты/Железо | HTML-парсинг. Отсеять: short-новости/слухи. Брать: обзоры флагманов. |
+| 47 | C | [Silicon Republic](https://www.siliconrepublic.com) | EN | Технологии/Стартапы | RSS. Отсеять: career advice/events. Брать: tech новости/анонсы. |
+| 48 | C | [Windows Central](https://www.windowscentral.com) | EN | Microsoft/Windows/Xbox | RSS по категориям. Отсеять: deals/gaming. Брать: Windows updates/Surface. |
+| 49 | C | [XDA Developers](https://www.xda-developers.com) | EN | Android/Моддинг | RSS. Отсеять: how-to/custom ROM. Брать: крупные анонсы Android. |
+| 50 | D | [GadgetMatch](https://www.gadgetmatch.com) | EN | Гаджеты | HTML-парсинг. Низкий приоритет — дублирует другие источники. |
+| 51 | D | [Mashable](https://mashable.com) | EN | Поп-культура/Tech | МНОГО шума мало ценности. Жёсткая фильтрация. Отсеять: мемы/viral. Брать: редко — крупные события. |
+
+### Telegram-каналы
+
+| Канал | Целевая тема | Подпись |
+|-------|--------------|---------|
+| [@NewAITracker](https://t.me/NewAITracker) | Нейросети | Sponsored by @NewAITracker |
