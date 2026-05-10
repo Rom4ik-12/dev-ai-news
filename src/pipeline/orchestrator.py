@@ -56,6 +56,16 @@ class Pipeline:
         log.info("Fresh items: %d / %d", len(fresh), len(items))
         if not fresh: return
 
+        # Seed-режим: первый запуск с пустой БД — только запоминаем guid'ы (без AI/публикации),
+        # чтобы не выгрузить лавину старых постов в чат. Со следующего цикла работает как обычно.
+        if db.total_published() == 0:
+            log.info("seed mode: первый запуск, помечаем %d постов как 'seeded' без публикации", len(fresh))
+            for it in fresh:
+                db.insert_post(it.source_id, it.guid, it.url, it.title,
+                               it.description, it.focus)
+                db.update_post_by_guid(it.source_id, it.guid, status="seeded")
+            return
+
         # Триаж по дешёвой модели на title+desc
         scores = await asyncio.gather(*(
             ai_tasks.triage_score(self.ai, it.title, it.description, triage_cfg["preview_chars"])

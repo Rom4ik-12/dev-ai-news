@@ -9,7 +9,7 @@ from ..utils.logger import get
 from ..storage import db
 
 log = get(__name__)
-BASE_URL = "https://gen.pollinations.ai"
+BASE_URL = "https://gen.pollinations.ai/v1"
 
 
 class AI:

@@ -141,6 +141,14 @@ def insert_post(source_id: str, guid: str, url: str, title: str,
         return cur.lastrowid
 
 
+def update_post_by_guid(source_id: str, guid: str, **fields) -> None:
+    if not fields: return
+    cols = ", ".join(f"{k}=?" for k in fields)
+    with connect() as c:
+        c.execute(f"UPDATE posts SET {cols} WHERE source_id=? AND guid=?",
+                  (*fields.values(), source_id, guid))
+
+
 def update_post(post_id: int, **fields) -> None:
     if not fields: return
     cols = ", ".join(f"{k}=?" for k in fields)
@@ -159,6 +167,11 @@ def get_post_by_message(chat_id: int, message_id: int) -> sqlite3.Row | None:
             "SELECT * FROM posts WHERE tg_chat_id=? AND tg_message_id=?",
             (chat_id, message_id),
         ).fetchone()
+
+
+def total_published() -> int:
+    with connect() as c:
+        return int(c.execute("SELECT COUNT(*) n FROM posts WHERE status='published'").fetchone()["n"])
 
 
 def recent_published(window_hours: int) -> list[sqlite3.Row]:

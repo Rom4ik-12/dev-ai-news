@@ -1,9 +1,9 @@
 from __future__ import annotations
-import aiohttp
+import asyncio, aiohttp
 from aiogram import Bot
 from aiogram.enums import ParseMode
-from aiogram.exceptions import TelegramBadRequest
-from aiogram.types import BufferedInputFile, URLInputFile
+from aiogram.exceptions import TelegramBadRequest, TelegramRetryAfter
+from aiogram.types import BufferedInputFile
 
 from ..utils.config import load_env, load_settings, load_sources
 from ..utils import topics as topics_router
@@ -31,25 +31,48 @@ def _format(post, parent, settings) -> str:
     return f"{head}<b>{title}</b>\n\n{body}\n\n{src}"
 
 
+MIN_INTERVAL_SEC = 3.5  # > 1 msg/3s рекомендованного TG для групп
+
+
 class Publisher:
     def __init__(self, bot: Bot):
         self.bot = bot
         self.env = load_env()
         self.settings = load_settings()
+        self._lock = asyncio.Lock()
+        self._last_sent_at = 0.0
+
+    async def _throttle(self) -> None:
+        async with self._lock:
+            now = asyncio.get_event_loop().time()
+            wait = MIN_INTERVAL_SEC - (now - self._last_sent_at)
+            if wait > 0: await asyncio.sleep(wait)
+            self._last_sent_at = asyncio.get_event_loop().time()
+
+    async def _safe_send(self, send_fn):
+        """Throttle + ловим TelegramRetryAfter с автоматическим retry (один раз)."""
+        await self._throttle()
+        try:
+            return await send_fn()
+        except TelegramRetryAfter as e:
+            log.warning("flood control, sleeping %ss", e.retry_after)
+            await asyncio.sleep(e.retry_after + 1)
+            await self._throttle()
+            return await send_fn()
 
     async def publish(self, post, parent=None) -> None:
         text = _format(post, parent, self.settings)
         # post["focus"] здесь = выбранное классификатором имя темы
         topic_id = topics_router.thread_id_for(post["focus"])
         try:
-            msg = await self.bot.send_message(
+            msg = await self._safe_send(lambda: self.bot.send_message(
                 chat_id=self.env.group_id,
                 text=text,
                 parse_mode=ParseMode.HTML,
                 message_thread_id=topic_id,
                 disable_web_page_preview=False,
                 reply_to_message_id=parent["tg_message_id"] if parent and parent["tg_chat_id"] == self.env.group_id else None,
-            )
+            ))
         except TelegramBadRequest as e:
             log.error("send_message failed: %s", e)
             db.update_post(post["id"], status="rejected")
@@ -80,17 +103,17 @@ class Publisher:
                         data = await r.read() if r.status == 200 else None
                 if data:
                     photo = BufferedInputFile(data, filename="card.jpg")
-                    msg = await self.bot.send_photo(self.env.group_id, photo,
-                                                    caption=caption, parse_mode=ParseMode.HTML,
-                                                    message_thread_id=topic_id)
+                    msg = await self._safe_send(lambda: self.bot.send_photo(
+                        self.env.group_id, photo, caption=caption,
+                        parse_mode=ParseMode.HTML, message_thread_id=topic_id))
                 else:
-                    msg = await self.bot.send_message(self.env.group_id, caption,
-                                                      parse_mode=ParseMode.HTML,
-                                                      message_thread_id=topic_id)
+                    msg = await self._safe_send(lambda: self.bot.send_message(
+                        self.env.group_id, caption, parse_mode=ParseMode.HTML,
+                        message_thread_id=topic_id))
             else:
-                msg = await self.bot.send_message(self.env.group_id, caption,
-                                                  parse_mode=ParseMode.HTML,
-                                                  message_thread_id=topic_id)
+                msg = await self._safe_send(lambda: self.bot.send_message(
+                    self.env.group_id, caption, parse_mode=ParseMode.HTML,
+                    message_thread_id=topic_id))
         except TelegramBadRequest as e:
             log.error("publish_channel failed: %s", e); return
         db.channel_post_save(item.post_id, item.channel, msg.chat.id, msg.message_id)
