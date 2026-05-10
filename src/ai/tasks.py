@@ -13,9 +13,27 @@ async def triage_score(ai: AI, title: str, desc: str, preview_chars: int = 600) 
     except ValueError: return 0
 
 
-async def summarize(ai: AI, title: str, body: str, max_tokens: int = 350) -> str:
+async def summarize(ai: AI, title: str, body: str, max_tokens: int = 350) -> tuple[str, str]:
+    """Возвращает (русский заголовок, краткий пересказ). Один LLM-вызов."""
     text = f"Заголовок: {title}\n\nТекст:\n{body[:6000]}"
-    return await ai.chat(prompts.SUMMARIZE, text, op="summarize", max_tokens=max_tokens, temperature=0.4)
+    out = await ai.chat(prompts.SUMMARIZE, text, op="summarize",
+                        max_tokens=max_tokens + 30, temperature=0.4)
+    ru_title, summary = _split_title(out, fallback_title=title)
+    return ru_title, summary
+
+
+def _split_title(text: str, fallback_title: str) -> tuple[str, str]:
+    lines = text.lstrip().splitlines()
+    for i, line in enumerate(lines):
+        s = line.strip()
+        if s.upper().startswith("ЗАГОЛОВОК:"):
+            ru = s.split(":", 1)[1].strip().strip('"\'«»').rstrip(".")
+            rest = "\n".join(lines[i+1:]).strip()
+            if ru and rest:
+                return ru[:120], rest
+            break
+    # модель проигнорировала формат — берём оригинал и весь ответ как summary
+    return fallback_title, text.strip()
 
 
 async def is_addition(ai: AI, new_title: str, new_summary: str,

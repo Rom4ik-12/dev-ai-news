@@ -20,15 +20,23 @@ def _src_name(source_id: str) -> str:
     return source_id
 
 
+def _esc(s: str) -> str:
+    return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 def _format(post, parent, settings) -> str:
     pub = settings["publish"]
     head = ""
     if parent:
-        head = f"<b>{pub['addition_prefix']}</b> «{parent['title']}»\n\n"
-    src = pub["source_line"].format(name=_src_name(post["source_id"]), url=post["url"])
-    title = post["title"].strip()
-    body = (post["summary"] or "").strip()
-    return f"{head}<b>{title}</b>\n\n{body}\n\n{src}"
+        head = f"<b>{_esc(pub['addition_prefix'])}</b> «{_esc(parent['title'])}»\n\n"
+    title = _esc(post["title"].strip())
+    body = _esc((post["summary"] or "").strip())
+    url = post["url"]
+    src_name = _esc(_src_name(post["source_id"]))
+    # Заголовок-гиперссылка + сноска со ссылкой на источник внизу
+    return (f"{head}<b><a href=\"{url}\">{title}</a></b>\n\n"
+            f"{body}\n\n"
+            f"<i>Источник: <a href=\"{url}\">{src_name}</a></i>")
 
 
 MIN_INTERVAL_SEC = 3.5  # > 1 msg/3s рекомендованного TG для групп

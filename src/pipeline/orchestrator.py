@@ -109,10 +109,10 @@ class Pipeline:
 
         # Резюме + классификация темы + публикация (последовательно — экономнее и надёжнее)
         for (it, score), full, pid, vec in zip(passed, full_texts, post_ids, vectors):
-            summary = await ai_tasks.summarize(self.ai, it.title, full or it.description,
-                                               max_tokens=sum_cfg["max_tokens"])
-            topic_name = await ai_tasks.classify_topic(self.ai, it.title, summary, topic_choices, fb)
-            db.update_post(pid, summary=summary, focus=topic_name)
+            ru_title, summary = await ai_tasks.summarize(
+                self.ai, it.title, full or it.description, max_tokens=sum_cfg["max_tokens"])
+            topic_name = await ai_tasks.classify_topic(self.ai, ru_title, summary, topic_choices, fb)
+            db.update_post(pid, title=ru_title, summary=summary, focus=topic_name)
 
             parent = None
             sim, near_id = _cosine_max(vec, [(p, v) for p, v in recent_published if p != pid])
