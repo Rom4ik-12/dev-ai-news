@@ -1,0 +1,97 @@
+from __future__ import annotations
+import aiohttp
+from aiogram import Bot
+from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramBadRequest
+from aiogram.types import BufferedInputFile, URLInputFile
+
+from ..utils.config import load_env, load_settings, load_sources
+from ..utils import topics as topics_router
+from ..utils.logger import get
+from ..storage import db
+from ..sources.telegram_channel import ChannelPost
+
+log = get(__name__)
+
+
+def _src_name(source_id: str) -> str:
+    for s in load_sources():
+        if s["id"] == source_id: return s["name"]
+    return source_id
+
+
+def _format(post, parent, settings) -> str:
+    pub = settings["publish"]
+    head = ""
+    if parent:
+        head = f"<b>{pub['addition_prefix']}</b> «{parent['title']}»\n\n"
+    src = pub["source_line"].format(name=_src_name(post["source_id"]), url=post["url"])
+    title = post["title"].strip()
+    body = (post["summary"] or "").strip()
+    return f"{head}<b>{title}</b>\n\n{body}\n\n{src}"
+
+
+class Publisher:
+    def __init__(self, bot: Bot):
+        self.bot = bot
+        self.env = load_env()
+        self.settings = load_settings()
+
+    async def publish(self, post, parent=None) -> None:
+        text = _format(post, parent, self.settings)
+        # post["focus"] здесь = выбранное классификатором имя темы
+        topic_id = topics_router.thread_id_for(post["focus"])
+        try:
+            msg = await self.bot.send_message(
+                chat_id=self.env.group_id,
+                text=text,
+                parse_mode=ParseMode.HTML,
+                message_thread_id=topic_id,
+                disable_web_page_preview=False,
+                reply_to_message_id=parent["tg_message_id"] if parent and parent["tg_chat_id"] == self.env.group_id else None,
+            )
+        except TelegramBadRequest as e:
+            log.error("send_message failed: %s", e)
+            db.update_post(post["id"], status="rejected")
+            return
+        db.update_post(post["id"],
+                       status="published",
+                       published_at=db.now(),
+                       tg_chat_id=msg.chat.id,
+                       tg_message_id=msg.message_id,
+                       tg_thread_id=topic_id)
+        db.audit(None, "publish", {"post_id": post["id"], "addition_of": parent["id"] if parent else None})
+
+    async def publish_channel(self, item: ChannelPost, target_topic: str, footer: str) -> None:
+        """Перепост из публичного TG-канала с подписью-футером."""
+        topic_id = topics_router.thread_id_for(target_topic)
+        text = (item.text or "").strip()
+        # Telegram caption лимит = 1024 символа; режем оставив место под футер
+        max_caption = 1024
+        suffix = f"\n\n— <i>{footer}</i>"
+        if len(text) + len(suffix) > max_caption:
+            text = text[: max_caption - len(suffix) - 1] + "…"
+        caption = f"{text}{suffix}"
+        try:
+            if item.image_url:
+                # тащим файл сами — у CDN нестабильно с прямой передачей URL Telegram'у
+                async with aiohttp.ClientSession() as s:
+                    async with s.get(item.image_url, timeout=aiohttp.ClientTimeout(total=20)) as r:
+                        data = await r.read() if r.status == 200 else None
+                if data:
+                    photo = BufferedInputFile(data, filename="card.jpg")
+                    msg = await self.bot.send_photo(self.env.group_id, photo,
+                                                    caption=caption, parse_mode=ParseMode.HTML,
+                                                    message_thread_id=topic_id)
+                else:
+                    msg = await self.bot.send_message(self.env.group_id, caption,
+                                                      parse_mode=ParseMode.HTML,
+                                                      message_thread_id=topic_id)
+            else:
+                msg = await self.bot.send_message(self.env.group_id, caption,
+                                                  parse_mode=ParseMode.HTML,
+                                                  message_thread_id=topic_id)
+        except TelegramBadRequest as e:
+            log.error("publish_channel failed: %s", e); return
+        db.channel_post_save(item.post_id, item.channel, msg.chat.id, msg.message_id)
+        db.audit(None, "publish_channel", {"post": item.post_id, "topic": target_topic})

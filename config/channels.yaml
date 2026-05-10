@@ -1,0 +1,11 @@
+# Источники, которые тащим из публичных Telegram-каналов через t.me/s/{name}.
+# Эти посты идут мимо AI-пайплайна (без триажа/резюме) — текст уже курируется автором канала.
+
+channels:
+  - id: newaitracker
+    channel: NewAITracker
+    target_topic: Нейросети
+    footer: "Sponsored by @NewAITracker"
+    fetch_limit: 20
+    # Пропускать посты без картинки (обычно реклама/мета)
+    require_image: true

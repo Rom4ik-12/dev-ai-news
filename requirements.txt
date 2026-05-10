@@ -1,0 +1,11 @@
+aiogram>=3.13
+aiohttp>=3.9
+feedparser>=6.0
+pyyaml>=6.0
+python-dotenv>=1.0
+openai>=1.50
+numpy>=1.26
+beautifulsoup4>=4.12
+lxml>=5.0
+openpyxl>=3.1
+tenacity>=8.2

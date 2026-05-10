@@ -1,0 +1,422 @@
+sources:
+- id: 3dnews
+  name: 3DNews
+  url: https://3dnews.ru
+  rss: https://feeds.3dnews.ru
+  lang: RU
+  focus: Железо/Софт/Гаджеты
+  priority: B
+  notes: 'RSS по категориям (Hardware/Software). Отсеять: скидки/пресс-релизы. Брать:
+    обзоры нового железа и аналитику.'
+- id: cnews
+  name: CNews
+  url: https://cnews.ru
+  rss: null
+  lang: RU
+  focus: IT-бизнес/Аналитика
+  priority: A
+  notes: 'Лучший RU источник. Отсеять: пресс-релизы. Брать: аналитика рынка и M&A.'
+- id: habr_news
+  name: Habr News
+  url: https://habr.com/ru/news/
+  rss: https://habr.com/ru/rss/all/
+  lang: RU
+  focus: IT/Программирование
+  priority: A
+  notes: 'RSS + фильтр рейтинг >50. Отсеять: переводы/холивары. Брать: оригинальные
+    статьи.'
+- id: vc_ru_tech
+  name: VC.ru Tech
+  url: https://vc.ru/tech
+  rss: null
+  lang: RU
+  focus: IT-бизнес/Стартапы
+  priority: A
+  notes: 'RSS. Отсеять: мнения без фактов. Брать: аналитика и крупные сделки.'
+- id: securitylab
+  name: SecurityLab
+  url: https://www.securitylab.ru
+  rss: null
+  lang: RU
+  focus: Кибербезопасность
+  priority: A
+  notes: 'Лучший RU security-источник. RSS полностью. Брать: уязвимости/security trends/аналитика.'
+- id: xakep_ru
+  name: Хакер (xakep.ru)
+  url: https://xakep.ru
+  rss: null
+  lang: RU
+  focus: Хакинг/Безопасность/DIY
+  priority: B
+  notes: 'RSS. Отсеять: статьи >30 дней. Брать: уязвимости/security tools/DIY hardware.'
+- id: overclockers_ru
+  name: Overclockers.ru
+  url: https://overclockers.ru
+  rss: null
+  lang: RU
+  focus: Железо/Разгон/Игры
+  priority: B
+  notes: 'RSS. Отсеять: форум/игры. Брать: обзоры железа/разгон/бенчмарки.'
+- id: ''
+  name: Хайтек+
+  url: https://hightech.plus
+  rss: null
+  lang: RU
+  focus: Технологии/Наука
+  priority: B
+  notes: 'RSS. Отсеять: deals/пресс-релизы. Брать: наука/гаджеты/космос/IT-аналитика.'
+- id: 4pda
+  name: 4PDA
+  url: https://4pda.to
+  rss: null
+  lang: RU
+  focus: Мобильные устройства
+  priority: B
+  notes: 'RSS. Отсеять: прошивки/моддинг/скидки. Брать: обзоры флагманов/сравнения.'
+- id: rozetked
+  name: Rozetked
+  url: https://rozetked.me
+  rss: null
+  lang: RU
+  focus: Гаджеты/Железо
+  priority: C
+  notes: 'HTML-парсинг. Отсеять: short-новости/слухи. Брать: обзоры флагманов.'
+- id: ars_technica
+  name: Ars Technica
+  url: https://arstechnica.com
+  rss: null
+  lang: EN
+  focus: Аналитика/Наука/Tech
+  priority: A
+  notes: 'Парсить RSS полностью. Фильтр по тегам. Отсеять: игры. Брать: глубокие статьи
+    и научные открытия.'
+- id: hacker_news
+  name: Hacker News
+  url: https://news.ycombinator.com
+  rss: https://hnrss.org
+  lang: EN
+  focus: Startups/Программирование
+  priority: A
+  notes: 'hnrss.org с points>50. Отсеять: Show HN/jobs. Брать: высокорейтинговые обсуждения.'
+- id: github_blog
+  name: GitHub Blog
+  url: https://github.blog
+  rss: https://github.blog/feed/
+  lang: EN
+  focus: GitHub/Open-source
+  priority: A
+  notes: 'Парсить RSS полностью. Мало шума. Брать: всё — каждая статья важна.'
+- id: lobsters
+  name: Lobsters
+  url: https://lobste.rs
+  rss: https://lobste.rs/rss
+  lang: EN
+  focus: Программирование
+  priority: A
+  notes: 'RSS с фильтром score. Брать: высокорейтинговые посты о новых технологиях.'
+- id: lwn_net
+  name: LWN.net
+  url: https://lwn.net
+  rss: https://lwn.net/headlines/rss
+  lang: EN
+  focus: Linux kernel
+  priority: A
+  notes: 'ОТЛИЧНЫЙ источник. RSS полностью. Ничего не отсеивать. Брать: всё.'
+- id: the_guardian_tech
+  name: The Guardian Tech
+  url: https://www.theguardian.com/technology
+  rss: null
+  lang: EN
+  focus: Tech policy/Privacy
+  priority: A
+  notes: 'RSS. Отсеять: обзоры гаджетов. Брать: tech policy/privacy/cybersecurity.'
+- id: anandtech
+  name: AnandTech
+  url: https://www.anandtech.com
+  rss: null
+  lang: EN
+  focus: Глубокие обзоры железа
+  priority: B
+  notes: 'RSS. Брать: подробные обзоры CPU/GPU/Storage. Лучший для hardware.'
+- id: bleepingcomputer
+  name: BleepingComputer
+  url: https://www.bleepingcomputer.com
+  rss: https://bleepingcomputer.com/feed/
+  lang: EN
+  focus: Кибербезопасность/Malware
+  priority: A
+  notes: 'ОТЛИЧНЫЙ security-источник. RSS полностью. Брать: security breaches/malware/уязвимости.'
+- id: packet_storm
+  name: Packet Storm
+  url: https://packetstormsecurity.com
+  rss: null
+  lang: EN
+  focus: Эксплоиты/Уязвимости
+  priority: B
+  notes: 'RSS. Отсеять: старые эксплоиты (>30 дней). Брать: новые уязвимости/security
+    tools.'
+- id: smashing_magazine
+  name: Smashing Magazine
+  url: https://www.smashingmagazine.com
+  rss: null
+  lang: EN
+  focus: Фронтенд/UX/Дизайн
+  priority: A
+  notes: 'RSS полностью. Низкая частота — высокое качество. Брать: всё.'
+- id: css_tricks
+  name: CSS-Tricks
+  url: https://css-tricks.com
+  rss: null
+  lang: EN
+  focus: CSS/Фронтенд
+  priority: A
+  notes: 'RSS полностью. Мало контента но высокого качества. Брать: всё.'
+- id: raspberry_pi_news
+  name: Raspberry Pi News
+  url: https://www.raspberrypi.com/news/
+  rss: null
+  lang: EN
+  focus: Raspberry Pi/Embedded
+  priority: B
+  notes: 'RSS полностью. Мало но качественно. Брать: новые продукты/проекты.'
+- id: mozilla_blog
+  name: Mozilla Blog
+  url: https://blog.mozilla.org
+  rss: null
+  lang: EN
+  focus: Firefox/Web standards
+  priority: B
+  notes: 'RSS полностью. Брать: Firefox updates/web privacy/internet policy.'
+- id: 9to5mac
+  name: 9to5Mac
+  url: https://9to5mac.com
+  rss: null
+  lang: EN
+  focus: Apple/iOS/macOS
+  priority: B
+  notes: 'RSS + фильтр по ключевым словам. Отсеять: слухи. Брать: обновления OS и
+    новые продукты.'
+- id: techcrunch
+  name: TechCrunch
+  url: https://techcrunch.com
+  rss: null
+  lang: EN
+  focus: Стартапы/Венчур
+  priority: A
+  notes: 'RSS по категориям. Отсеять: мелкие funding rounds. Брать: крупные сделки
+    и IPO.'
+- id: the_verge
+  name: The Verge
+  url: https://www.theverge.com
+  rss: null
+  lang: EN
+  focus: Поп-культура/Tech
+  priority: B
+  notes: 'RSS с фильтрацией. Отсеять: стриминги/развлечения. Брать: tech policy и
+    AI-новости.'
+- id: tom_s_hardware
+  name: Tom's Hardware
+  url: https://www.tomshardware.com
+  rss: null
+  lang: EN
+  focus: Железо/Обзоры
+  priority: B
+  notes: 'RSS по категориям (CPU/GPU). Отсеять: deals. Брать: обзоры нового железа
+    и бенчмарки.'
+- id: phoronix
+  name: Phoronix
+  url: https://www.phoronix.com
+  rss: https://phoronix.com/rss.php
+  lang: EN
+  focus: Linux hardware
+  priority: B
+  notes: 'RSS по категориям. Отсеять: мелкие обновления драйверов. Брать: релизы Mesa/Kernel.'
+- id: venturebeat
+  name: VentureBeat
+  url: https://venturebeat.com
+  rss: null
+  lang: EN
+  focus: AI/Enterprise/Игры
+  priority: A
+  notes: 'RSS по категориям (AI/Enterprise). Отсеять: игры. Брать: AI-исследования/enterprise
+    tech.'
+- id: tech_eu
+  name: Tech.eu
+  url: https://tech.eu
+  rss: null
+  lang: EN
+  focus: Европейские стартапы
+  priority: B
+  notes: 'RSS. Отсеять: мелкие funding rounds. Брать: крупные сделки/европейские тренды.'
+- id: notebookcheck
+  name: Notebookcheck
+  url: https://www.notebookcheck.net
+  rss: null
+  lang: EN/DE
+  focus: Ноутбуки/Смартфоны
+  priority: B
+  notes: 'RSS. Отсеять: мелкие анонсы. Брать: обзоры с бенчмарками.'
+- id: osnews
+  name: OSNews
+  url: https://www.osnews.com
+  rss: null
+  lang: EN
+  focus: Операционные системы
+  priority: B
+  notes: 'RSS. Брать: новые OS/обновления/аналитика.'
+- id: android_central
+  name: Android Central
+  url: https://androidcentral.com
+  rss: null
+  lang: EN
+  focus: Android/Мобильные
+  priority: C
+  notes: 'RSS с фильтрацией. Отсеять: how-to/аксессуары. Брать: глобальные обновления
+    Android.'
+- id: cnet
+  name: CNET
+  url: https://www.cnet.com
+  rss: null
+  lang: EN
+  focus: Обзоры/Tech новости
+  priority: C
+  notes: 'МНОГО шума. Жёсткая фильтрация. Отсеять: deals/how-to/sponsored. Брать:
+    крупные анонсы.'
+- id: engadget
+  name: Engadget
+  url: https://www.engadget.com
+  rss: null
+  lang: EN
+  focus: Гаджеты/Tech
+  priority: C
+  notes: 'RSS с фильтрацией. Отсеять: скидки/how-to/игры. Брать: крупные анонсы.'
+- id: reddit_r_programming
+  name: Reddit r/programming
+  url: https://reddit.com/r/programming
+  rss: null
+  lang: EN
+  focus: Программирование
+  priority: B
+  notes: 'RSS с фильтром upvotes>500. Отсеять: мемы/холивары. Брать: крупные релизы.'
+- id: zdnet
+  name: ZDNET
+  url: https://www.zdnet.com
+  rss: null
+  lang: EN
+  focus: Enterprise/Cloud/AI
+  priority: B
+  notes: 'RSS с фильтрацией. Отсеять: sponsored. Брать: enterprise news и cloud computing.'
+- id: xda_developers
+  name: XDA Developers
+  url: https://www.xda-developers.com
+  rss: null
+  lang: EN
+  focus: Android/Моддинг
+  priority: C
+  notes: 'RSS. Отсеять: how-to/custom ROM. Брать: крупные анонсы Android.'
+- id: android_police
+  name: Android Police
+  url: https://www.androidpolice.com
+  rss: null
+  lang: EN
+  focus: Android/Google
+  priority: C
+  notes: 'RSS. Отсеять: app reviews/how-to. Брать: обновления Android/Google анонсы.'
+- id: futurism
+  name: Futurism
+  url: https://futurism.com
+  rss: null
+  lang: EN
+  focus: Наука/AI/Космос
+  priority: C
+  notes: 'RSS. Отсеять: clickbait. Брать: AI-новости/космос/научные открытия.'
+- id: gadgetmatch
+  name: GadgetMatch
+  url: https://www.gadgetmatch.com
+  rss: null
+  lang: EN
+  focus: Гаджеты
+  priority: D
+  notes: HTML-парсинг. Низкий приоритет — дублирует другие источники.
+- id: silicon_republic
+  name: Silicon Republic
+  url: https://www.siliconrepublic.com
+  rss: null
+  lang: EN
+  focus: Технологии/Стартапы
+  priority: C
+  notes: 'RSS. Отсеять: career advice/events. Брать: tech новости/анонсы.'
+- id: dev_to
+  name: DEV.to
+  url: https://dev.to
+  rss: https://dev.to/feed
+  lang: EN
+  focus: Программирование/Карьера
+  priority: B
+  notes: 'ОГРОМНОЙ поток. RSS с фильтром reactions>100. Отсеять: beginner/career.
+    Брать: популярные технические статьи.'
+- id: windows_central
+  name: Windows Central
+  url: https://www.windowscentral.com
+  rss: null
+  lang: EN
+  focus: Microsoft/Windows/Xbox
+  priority: C
+  notes: 'RSS по категориям. Отсеять: deals/gaming. Брать: Windows updates/Surface.'
+- id: mashable
+  name: Mashable
+  url: https://mashable.com
+  rss: null
+  lang: EN
+  focus: Поп-культура/Tech
+  priority: D
+  notes: 'МНОГО шума мало ценности. Жёсткая фильтрация. Отсеять: мемы/viral. Брать:
+    редко — крупные события.'
+- id: stopgame
+  name: StopGame
+  url: https://stopgame.ru
+  rss: https://rss.stopgame.ru/rss_news.xml
+  lang: RU
+  focus: Игры/Релизы/Обзоры
+  priority: A
+  notes: Крупнейший RU игровой портал. Релизы, обзоры, индустрия.
+- id: igromania
+  name: Игромания
+  url: https://www.igromania.ru
+  rss: https://www.igromania.ru/rss/rss_news_short.xml
+  lang: RU
+  focus: Игры/Новости
+  priority: B
+  notes: RU-новости игр.
+- id: pcgamer
+  name: PC Gamer
+  url: https://www.pcgamer.com
+  rss: https://www.pcgamer.com/rss/
+  lang: EN
+  focus: Игры/PC
+  priority: A
+  notes: Релизы, обзоры, индустрия PC-игр.
+- id: rps
+  name: Rock Paper Shotgun
+  url: https://www.rockpapershotgun.com
+  rss: https://www.rockpapershotgun.com/feed
+  lang: EN
+  focus: Игры/PC
+  priority: B
+  notes: Авторский игровой блог о PC.
+- id: eurogamer
+  name: Eurogamer
+  url: https://www.eurogamer.net
+  rss: https://www.eurogamer.net/feed
+  lang: EN
+  focus: Игры/Индустрия
+  priority: B
+  notes: Игровые новости и аналитика.
+- id: gamingonlinux
+  name: GamingOnLinux
+  url: https://www.gamingonlinux.com
+  rss: https://www.gamingonlinux.com/article_rss.php
+  lang: EN
+  focus: Игры/Linux
+  priority: C
+  notes: Игры на Linux/Steam Deck/Proton.

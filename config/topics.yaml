@@ -1,0 +1,34 @@
+# Темы форума. Заполнить thread_id после создания тем в Telegram.
+# `description` — подсказка для AI-классификатора.
+# `no_autopublish: true` — тема исключается из автопостинга (только ручные сообщения).
+# `fallback` — куда складывать, если классификатор затруднился.
+
+fallback: Айти
+
+topics:
+  Нейросети:
+    thread_id: null
+    description: "AI/ML/нейросети, новые модели, исследования, релизы LLM, инструменты ИИ. Также — все посты про OpenRouter."
+
+  Железо:
+    thread_id: null
+    description: "Железо: процессоры, видеокарты, смартфоны, ноутбуки, гаджеты, обзоры, бенчмарки. Apple/Android/Samsung/Xiaomi и т.п."
+
+  Инструменты:
+    thread_id: null
+    description: "Программирование, языки, фреймворки, Linux/kernel, open-source, devtools, фронтенд, IDE, DevOps, GitHub."
+
+  Блокировки:
+    thread_id: null
+    description: "Кибербезопасность: уязвимости, эксплоиты, утечки, malware, фишинг, CVE, security-news, блокировки и приватность."
+
+  Айти:
+    thread_id: null
+    description: "Общие IT-новости: бизнес, корпорации, тренды, политика в tech, всё что не подходит специализированным темам."
+
+  Игры:
+    thread_id: null
+    description: "Игры: новые релизы, анонсы, скидки/распродажи (Steam/Epic/GOG), бесплатные раздачи, крупные обновления, пресс-конференции, индустрия видеоигр."
+
+  Разговоры:   { thread_id: null, description: "Свободное общение", no_autopublish: true }
+  Приветствия: { thread_id: null, description: "Знакомства", no_autopublish: true }
